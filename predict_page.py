@@ -18,7 +18,7 @@ le_undergradmajor = data["le_undergradmajor"]
 le_webfameworkedwith = data["le_webfameworkedwith"]
 
 def show_predict_page():
-    st.title("Salary Prediction App")
+    #st.title("Salary Prediction App")
     st.write("""### We need some information to predict the salary""")
 
     # Track which step of the form the user is on
