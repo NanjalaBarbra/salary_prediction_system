@@ -3,8 +3,8 @@ import mysql.connector
 def get_connection():
     return mysql.connector.connect(
         host="localhost",
-        user="root",          # replace with your MySQL username
-        password="",          # replace with your MySQL password
+        user="root",
+        password="admin@123",      # 
         database="salary_prediction_app",
         connection_timeout=600
     )
@@ -14,7 +14,7 @@ def init_db():
     init_conn = mysql.connector.connect(
         host="localhost",
         user="root",
-        password=""
+        password="admin@123"
     )
     init_cur = init_conn.cursor()
     init_cur.execute("CREATE DATABASE IF NOT EXISTS salary_prediction_app")
@@ -25,7 +25,6 @@ def init_db():
     conn = get_connection()
     cur = conn.cursor()
 
-    # Create tables
     cur.execute("""
     CREATE TABLE IF NOT EXISTS users (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -52,7 +51,7 @@ def init_db():
     conn.commit()
     cur.close()
     conn.close()
-    print("✅ Database and tables initialized successfully")
+    print(" Database and tables initialized successfully")
 
 if __name__ == "__main__":
     init_db()
