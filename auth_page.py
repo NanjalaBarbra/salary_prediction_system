@@ -40,16 +40,10 @@ def register_user(username, password, email=None):
 
                 hashed_pw = generate_password_hash(password)
 
-                try:
-                    cur.execute(
-                        "INSERT INTO users (username, password, email) VALUES (%s, %s, %s)",
-                        (username, hashed_pw, email)
-                    )
-                except Exception:
-                    cur.execute(
-                        "INSERT INTO users (username, password) VALUES (%s, %s)",
-                        (username, hashed_pw)
-                    )
+                cur.execute(
+                    "INSERT INTO users (username, password, email) VALUES (%s, %s, %s)",
+                    (username, hashed_pw, email)
+                )
                 conn.commit()
         return True, "User registered successfully."
     except Exception as e:
@@ -151,7 +145,7 @@ def show_auth_page():
             text-align: center;
             font-size: 4.5rem;
             font-weight: 800;
-            background: linear-gradient(120deg, #10b981, #3b82f6, #8b5cf6);
+            background: linear-gradient(120deg, #1a2e42, #2d4a6b, #4a6b8a);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-top: 2rem;
@@ -160,21 +154,21 @@ def show_auth_page():
         .auth-subtitle {
             text-align: center;
             font-size: 1.5rem;
-            color: #1e40af;
+            color: #1a2e42;
             margin-bottom: 3rem;
             font-weight: 700;
             background: #ffffff;
             padding: 0.75rem 2rem;
             border-radius: 50px;
             display: inline-block;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-            border: 2px solid #3b82f6;
+            box-shadow: 0 4px 20px rgba(45, 74, 107, 0.14);
+            border: 2px solid #4a6b8a;
         }
         .auth-form-title {
             text-align: center;
             font-size: 1.5rem;
             font-weight: 700;
-            background: linear-gradient(120deg, #8b5cf6, #3b82f6);
+            background: linear-gradient(120deg, #2d4a6b, #4a6b8a);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 1.5rem;
@@ -189,18 +183,18 @@ def show_auth_page():
             background: rgba(255,255,255,0.95);
             border-radius: 24px;
             padding: 2.5rem;
-            box-shadow: 0 20px 60px rgba(102,126,234,0.4);
-            border: 3px solid rgba(251,191,36,0.4);
+            box-shadow: 0 20px 60px rgba(45,74,107,0.18);
+            border: 2px solid rgba(74,107,138,0.22);
             backdrop-filter: blur(10px);
         }
         .reset-code-box {
-            background: #f0f4ff;
-            border: 2px dashed #667eea;
+            background: #f0f2f4;
+            border: 2px dashed #4a6b8a;
             border-radius: 12px;
             padding: 14px;
             text-align: center;
             font-size: 0.82rem;
-            color: #4c51bf;
+            color: #3a5570;
             margin: 0.8rem 0;
             font-weight: 600;
         }
@@ -293,7 +287,7 @@ def show_auth_page():
                             unsafe_allow_html=True)
                 st.markdown(
                     """
-                    <p style="font-size:0.85rem; color:#6b7280; text-align:center; margin-bottom:1rem;">
+                    <p style="font-size:0.85rem; color:#6b7c8d; text-align:center; margin-bottom:1rem;">
                         Enter your username and registered email.<br>
                         We'll send you a reset code.
                     </p>

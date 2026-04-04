@@ -34,7 +34,7 @@ import streamlit as st
 #   login       : 5 attempts per 60 s per username
 #   register    : 5 attempts per 60 s per IP (approximated by session)
 #   predict     : 30 attempts per 60 s per username
-#   password    : 3 attempts per 300 s per username
+#   password    : 3 attempts per 60 s per username
 
 _RATE_LIMITS = {
     # endpoint_name: (max_calls, window_seconds)
@@ -42,7 +42,7 @@ _RATE_LIMITS = {
     "login":           (5,  60),    # 5 attempts per 60 s per username
     "register":        (5,  60),    # 5 registrations per 60 s per session
     "predict":         (30, 60),    # 30 predictions per 60 s per user
-    "password_reset":  (3,  300),   # 3 reset requests per 5 min per username
+    "password_reset":  (3,  60),    # 3 reset requests per 1 min per username
     "change_password": (3,  300),   # 3 change attempts per 5 min per username
     "admin_action":    (10, 60),    # 10 admin writes per 60 s — prevents bulk abuse
 }

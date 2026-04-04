@@ -1,12 +1,37 @@
-# Python cache files
+# ── DATA & MODELS ──
+data/survey_results_public.csv
+*.csv
+*.pkl
+*.joblib
+
+# ── SECURITY & PASSWORDS ──
+.env
+password.txt
+password_reset.py
+check_env.py
+test_email.py
+
+# ── PYTHON ──
 __pycache__/
 *.pyc
-
-# Environment variables
-.env
-
-# Jupyter checkpoints
 .ipynb_checkpoints/
+venv/
+env/
 
-# Streamlit cache (optional)
-.streamlit/
+# ── SYSTEM ──
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── LOGS & OUTPUT ──
+output.txt
+*.log
+*.png
+*.jpeg
+*.jpg
+
+# ── UI & TOOL JUNK ──
+.streamlit/config.toml
+.kombai/
+notebooks/
+scripts/
