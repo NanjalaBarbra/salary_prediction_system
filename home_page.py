@@ -128,6 +128,29 @@ def show_home_page():
         font-size: 0.98rem;
         color: #ffffff;
     }
+    .hero-learn-more {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 0.9rem;
+        padding: 0.42rem 0.95rem;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #12354d 0%, #0b2436 100%);
+        border: 1px solid rgba(255,255,255,0.10);
+        color: #ffffff !important;
+        font-size: 0.68rem;
+        font-weight: 700;
+        text-decoration: none !important;
+        letter-spacing: 0.01em;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 20px rgba(5,16,26,0.28);
+        transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+    }
+    .hero-learn-more:hover {
+        transform: translateY(-1px);
+        background: linear-gradient(135deg, #184663 0%, #102d42 100%);
+        border-color: rgba(255,255,255,0.16);
+    }
     .hero-visual {
         position: relative;
         min-height: 580px !important;
@@ -869,16 +892,6 @@ def show_home_page():
         font-weight: 600 !important;
         white-space: nowrap !important;
     }
-    .hero-market-bar::before {
-        content: attr(data-value) !important;
-        position: absolute !important;
-        top: -24px !important;
-        left: 50% !important;
-        transform: translateX(-50%) !important;
-        font-size: 0.75rem !important;
-        color: #1a2e42 !important;
-        font-weight: 700 !important;
-    }
 
     </style>
     """)
@@ -922,6 +935,7 @@ def show_home_page():
                             <div class="hero-chip"><strong>180+</strong> countries compared</div>
                             <div class="hero-chip"><strong>ML</strong> prediction engine</div>
                         </div>
+                        <a class="hero-learn-more" href="https://stackoverflow.blog/2017/05/09/introducing-stack-overflow-trends/" target="_blank" rel="noopener noreferrer">Learn more</a>
                     </div>
                     <div class="hero-visual">
                         <div class="hero-float hero-float-top">

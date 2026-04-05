@@ -120,15 +120,78 @@ def delete_user_account(username):
 
 
 # ------------------------------------------------------------------ #
-# ADMIN LOGIN
+# ADMIN LOGIN  — now fully database-backed
+# Passwords are stored as werkzeug hashes in the admins table.
+# Use create_admin.py to create or reset admin accounts.
 # ------------------------------------------------------------------ #
 
 def login_admin(username, password):
-    import os
-    admin_password = os.environ.get("ADMIN_PASSWORD", "")
-    if username == "admin" and password == admin_password:
-        return True, "Admin login successful."
-    return False, "Invalid admin credentials."
+    """
+    Verify admin credentials against the admins table in the database.
+    Returns (True, "Admin login successful.") on success,
+    or (False, "Invalid admin credentials.") on failure.
+    """
+    try:
+        with get_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    "SELECT password FROM admins WHERE username = %s",
+                    (username,)
+                )
+                row = cur.fetchone()
+
+        if not row:
+            return False, "Invalid admin credentials."
+
+        if check_password_hash(row[0], password):
+            return True, "Admin login successful."
+        else:
+            return False, "Invalid admin credentials."
+
+    except Exception as e:
+        return False, f"Error: {str(e)}"
+
+
+# ------------------------------------------------------------------ #
+# ADMIN REGISTRATION (internal use — called by create_admin.py)
+# ------------------------------------------------------------------ #
+
+def register_admin(username, password):
+    """
+    Create a new admin account in the admins table.
+    Password is hashed before storage — never stored in plaintext.
+    Call this from create_admin.py, not from the UI.
+    """
+    try:
+        valid, msg = validate_password_strength(password)
+        if not valid:
+            return False, msg
+
+        hashed_pw = generate_password_hash(password)
+
+        with get_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    "SELECT username FROM admins WHERE username = %s", (username,)
+                )
+                if cur.fetchone():
+                    # Admin exists — update password instead
+                    cur.execute(
+                        "UPDATE admins SET password = %s WHERE username = %s",
+                        (hashed_pw, username)
+                    )
+                    conn.commit()
+                    return True, f"Admin '{username}' password updated successfully."
+                else:
+                    cur.execute(
+                        "INSERT INTO admins (username, password) VALUES (%s, %s)",
+                        (username, hashed_pw)
+                    )
+                    conn.commit()
+                    return True, f"Admin '{username}' created successfully."
+
+    except Exception as e:
+        return False, f"Error: {str(e)}"
 
 
 # ------------------------------------------------------------------ #

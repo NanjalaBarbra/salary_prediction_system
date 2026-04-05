@@ -282,6 +282,18 @@ def show_explore_page():
         .ep-card     { background:#fff; border-radius:18px; padding:1.5rem; border:1px solid #e2e8f0; box-shadow:0 4px 20px rgba(99,102,241,0.07); margin-bottom:1rem; }
         .ep-card-title { font-family:'Syne',sans-serif; font-size:1rem; font-weight:700; color:#0f172a; margin-bottom:0.2rem; }
         .ep-card-sub { font-family:'DM Sans',sans-serif; font-size:0.8rem; color:#94a3b8; margin-bottom:1rem; }
+        .ep-notes { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:1rem; }
+        .ep-note {
+            background:linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
+            border:1px solid #dbe7ff;
+            border-radius:16px;
+            padding:1rem 1rem 1.05rem;
+        }
+        .ep-note-title { font-family:'Syne',sans-serif; font-size:0.95rem; font-weight:700; color:#0f172a; margin-bottom:0.45rem; }
+        .ep-note-copy { font-family:'DM Sans',sans-serif; font-size:0.88rem; line-height:1.65; color:#475569; }
+        @media (max-width: 900px) {
+            .ep-notes { grid-template-columns:1fr; }
+        }
 
         </style>
     """)
@@ -334,9 +346,17 @@ def show_explore_page():
         # Horizontal bar — mean salary per country, sorted highest first
         st.html('<div class="ep-card">')
         st.html('<div class="ep-card-title">Average Salary by Country</div>')
-        st.html('<div class="ep-card-sub">Mean annual salary (USD) sorted highest to lowest</div>')
+        st.html('<div class="ep-card-sub">Mean annual salary (USD) aligned with the latest prediction markets, including Kenya and Other</div>')
 
-        data = df.groupby("Country")["Salary"].mean().sort_values(ascending=True)
+        data = df.groupby("Country")["Salary"].mean()
+        data = data.rename(index={"other": "Other"})
+        kenya_market_mean = np.mean([
+            5581, 4837, 5116, 6977, 6047, 5581, 6512, 6047, 4837, 5116, 4465, 6977,
+            9302, 7907, 8837, 12093, 10233, 9302, 10233, 9302, 7907, 8837, 7442, 13023,
+            15814, 13023, 14419, 20930, 17674, 15814, 17674, 16744, 13023, 14419, 11628, 21860,
+        ])
+        data.loc["Kenya"] = kenya_market_mean
+        data = data.sort_values(ascending=True)
         fig, ax = plt.subplots(figsize=(7, 5))
         fig.patch.set_facecolor("#f8faff")
         bars = ax.barh(data.index, data.values,
@@ -405,214 +425,96 @@ def show_explore_page():
         plt.close(fig)
         st.html('</div>')
 
-    # ══ d. ROW 3 — Employment & Major ════════════════════
-    col_emp, col_maj = st.columns(2, gap="large")
 
-    with col_emp:
-        # Vertical bar — full-time vs part-time vs other
-        st.html('<div class="ep-card">')
-        st.html('<div class="ep-card-title">Salary by Employment Type</div>')
-        st.html('<div class="ep-card-sub">Full-time vs part-time average earnings</div>')
 
-        data = df.groupby("Employment")["Salary"].mean().sort_values(ascending=False)
-        fig, ax = plt.subplots(figsize=(7, 4))
-        fig.patch.set_facecolor("#f8faff")
-        bars = ax.bar(data.index, data.values,
-                      color=["#5B9BD5", "#10b981", "#f472b6"][:len(data)],
-                      edgecolor="white", linewidth=2, width=0.45)
-        _style_ax(ax, "Salary by Employment Type", ylabel="Avg Salary (USD)")
-        ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f"${x:,.0f}"))
-        for bar in bars:
-            h = bar.get_height()
-            ax.text(bar.get_x() + bar.get_width() / 2, h + 500,
-                    f"${h:,.0f}", ha="center", fontsize=9,
-                    color="#475569", fontweight="bold")
-        plt.tight_layout()
-        st.pyplot(fig, use_container_width=True)
-        plt.close(fig)
-        st.html('</div>')
-
-    with col_maj:
-        # Horizontal bar — median salary by education level
-        st.html('<div class="ep-card">')
-        st.html('<div class="ep-card-title">Median Salary by Education</div>')
-        st.html('<div class="ep-card-sub">How education level influences earning potential in 2025</div>')
-
-        data = df.groupby("EdLevel")["Salary"].median().sort_values(ascending=True)
-        fig, ax = plt.subplots(figsize=(7, 5))
-        fig.patch.set_facecolor("#f8faff")
-        bars = ax.barh(data.index, data.values,
-                       color=["#10b981", "#5B9BD5", "#f472b6", "#fbbf24"][:len(data)],
-                       edgecolor="white", linewidth=1.5, height=0.55)
-        _style_ax(ax, "Median Salary by Education Level", xlabel="USD")
-        ax.grid(axis="x", color="#e2e8f0", linewidth=0.8, linestyle="--", alpha=0.7)
-        ax.grid(axis="y", visible=False)
-        for bar in bars:
-            w = bar.get_width()
-            ax.text(w + 400, bar.get_y() + bar.get_height() / 2,
-                    f"${w:,.0f}", va="center", fontsize=8, color="#475569")
-        plt.tight_layout()
-        st.pyplot(fig, use_container_width=True)
-        plt.close(fig)
-        st.html('</div>')
-
-    # ══ e. ROW 4 — Web Framework (full width) ════════════
-    # Full-width vertical bar so all framework names fit along the x-axis
     st.html('<div class="ep-card">')
-    st.html('<div class="ep-card-title">Salary by Web Framework</div>')
-    st.html('<div class="ep-card-sub">Average salary across different web frameworks used</div>')
+    st.html('<div class="ep-card-title">Kenyan Salaries</div>')
+    st.html('<div class="ep-card-sub">Illustrative local-market salary guide across experience, education, and work mode.</div>')
 
-    if "WebframeHaveWorkedWith" in df.columns:
-        data = df.groupby("WebframeHaveWorkedWith")["Salary"].mean().sort_values(ascending=True)
-        fig, ax = plt.subplots(figsize=(14, 4))
-        fig.patch.set_facecolor("#f8faff")
-        bars = ax.bar(data.index, data.values,
-                      color=PALETTE[:len(data)],
-                      edgecolor="white", linewidth=2, width=0.55)
-        _style_ax(ax, "Mean Salary by Web Framework", ylabel="Avg Salary (USD)")
-        ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f"${x:,.0f}"))
-        for bar in bars:
-            h = bar.get_height()
-            ax.text(bar.get_x() + bar.get_width() / 2, h + 300,
-                    f"${h:,.0f}", ha="center", fontsize=8.5,
-                    color="#475569", fontweight="bold", rotation=45)
-        plt.tight_layout()
-        st.pyplot(fig, use_container_width=True)
-        plt.close(fig)
-    else:
-        st.info("WebframeHaveWorkedWith column not found in dataset.")
+    kenya_roles = ["Backend", "Frontend", "Fullstack", "AI/ML", "Data Sci", "Data Eng", "DevOps", "Cloud Eng", "Mobile", "Security", "DB Admin", "Eng Mgr"]
+    kenya_junior = [5581, 4837, 5116, 6977, 6047, 5581, 6512, 6047, 4837, 5116, 4465, 6977]
+    kenya_mid = [9302, 7907, 8837, 12093, 10233, 9302, 10233, 9302, 7907, 8837, 7442, 13023]
+    kenya_senior = [15814, 13023, 14419, 20930, 17674, 15814, 17674, 16744, 13023, 14419, 11628, 21860]
+
+    x = np.arange(len(kenya_roles))
+    width = 0.26
+
+    fig, ax = plt.subplots(figsize=(9.5, 3.9))
+    fig.patch.set_facecolor("#f8faff")
+    ax.bar(x - width, kenya_junior, width, label="Junior (0-3 yrs)", color="#4a90e2")
+    ax.bar(x, kenya_mid, width, label="Mid (3-5 yrs)", color="#2ca581")
+    ax.bar(x + width, kenya_senior, width, label="Senior (6+ yrs)", color="#eb6a3a")
+    _style_ax(ax, "Local Salary by Experience Level", ylabel="USD per year")
+    ax.set_xticks(x)
+    ax.set_xticklabels(kenya_roles, rotation=24, ha="right")
+    ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda val, _: f"${val/1000:.0f}K"))
+    ax.legend(frameon=False, ncol=3, loc="upper left")
+    plt.tight_layout()
+    st.pyplot(fig, use_container_width=True)
+    plt.close(fig)
+
+    edu_labels = ["< Bachelor's", "Bachelor's", "Master's", "Postgrad"]
+    edu_values = [6047, 7442, 9302, 11163]
+
+    fig, ax = plt.subplots(figsize=(8.8, 2.9))
+    fig.patch.set_facecolor("#f8faff")
+    edu_colors = ["#ada7e8", "#847adc", "#6253c6", "#4b3f9d"]
+    bars = ax.barh(edu_labels, edu_values, color=edu_colors, edgecolor="white", linewidth=1.5, height=0.75)
+    _style_ax(ax, "Education Premium for Backend Developers", xlabel="Mid-level salary floor (USD)")
+    ax.xaxis.set_major_formatter(plt.FuncFormatter(lambda val, _: f"${val/1000:.0f}K"))
+    ax.grid(axis="x", color="#e2e8f0", linewidth=0.8, linestyle="--", alpha=0.7)
+    ax.grid(axis="y", visible=False)
+    for bar in bars:
+        w = bar.get_width()
+        ax.text(w + 180, bar.get_y() + bar.get_height() / 2, f"${w:,.0f}", va="center", fontsize=9, color="#475569")
+    ax.invert_yaxis()
+    plt.tight_layout()
+    st.pyplot(fig, use_container_width=True)
+    plt.close(fig)
+
+    remote_labels = ["Local (Kenya market)", "Remote (international)"]
+    remote_values = [10500, 56000]
+
+    fig, ax = plt.subplots(figsize=(8.8, 2.6))
+    fig.patch.set_facecolor("#f8faff")
+    bars = ax.barh(remote_labels, remote_values, color=["#a8a59e", "#2ca581"], edgecolor="white", linewidth=1.5, height=0.7)
+    _style_ax(ax, "Local vs Remote Market Gap", xlabel="USD per year")
+    ax.xaxis.set_major_formatter(plt.FuncFormatter(lambda val, _: f"${val/1000:.0f}K"))
+    ax.grid(axis="x", color="#e2e8f0", linewidth=0.8, linestyle="--", alpha=0.7)
+    ax.grid(axis="y", visible=False)
+    for bar in bars:
+        w = bar.get_width()
+        ax.text(w + 650, bar.get_y() + bar.get_height() / 2, f"${w:,.0f}", va="center", fontsize=9, color="#475569")
+    ax.invert_yaxis()
+    plt.tight_layout()
+    st.pyplot(fig, use_container_width=True)
+    plt.close(fig)
 
     st.html('</div>')
 
-    # ══ f. ROW 5 — Developer Type (full width) ═══════════
-    # NEW: horizontal bar chart so long role names are readable
-    # DevType was already cleaned to take the first listed role
-    st.html('<div class="ep-card">')
-    st.html('<div class="ep-card-title">Salary by Developer Type</div>')
-    st.html('<div class="ep-card-sub">Average salary grouped by primary developer role</div>')
-
-    if "DevType" in df.columns:
-        # Calculate global median and counts per role
-        dev_df = df[df["DevType"] != "Unknown"]
-        global_median = dev_df["Salary"].mean()
-
-        # Group data and filter for sample size
-        dev_stats = dev_df.groupby("DevType")["Salary"].agg(["mean", "count"]).reset_index()
-        dev_stats = dev_stats[dev_stats["count"] >= 50]
-        dev_stats = dev_stats.sort_values("mean", ascending=True).tail(18)
-
-        fig, ax = plt.subplots(figsize=(14, 8))
-        fig.patch.set_facecolor("#f8faff")
-
-        # Ensure visibility by starting the gradient range at 0.4 (avoiding near-white)
-        v_min, v_max = dev_stats["mean"].min(), dev_stats["mean"].max()
-        # Scale values into the 0.4 - 0.9 range of the Blues colormap
-        if v_max > v_min:
-            vals = 0.4 + 0.5 * (dev_stats["mean"].values - v_min) / (v_max - v_min)
-        else:
-            vals = [0.7] * len(dev_stats)
-        colors = plt.cm.Blues(vals)
-        colors = [plt.cm.colors.to_hex(c) for c in colors]
-
-        bars = ax.barh(dev_stats["DevType"], dev_stats["mean"],
-                       color=colors, edgecolor="white", linewidth=1, height=0.7)
-
-        _style_ax(ax, "Mean Salary by Developer Type", xlabel="Avg Salary (USD)")
-
-        # Global median reference line
-        ax.axvline(global_median, color="#f43f5e", linestyle="--", alpha=0.5, linewidth=1.5)
-        ax.text(global_median + 2000, -0.5, f"Global Avg: ${global_median:,.0f}",
-                color="#f43f5e", fontweight="bold", fontsize=9, va="bottom")
-
-        ax.grid(axis="x", color="#e2e8f0", linewidth=0.8, linestyle="--", alpha=0.7)
-        ax.grid(axis="y", visible=False)
-        ax.xaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f"${x:,.0f}"))
-
-        # Labels including sample size (n=...)
-        for i, bar in enumerate(bars):
-            w = bar.get_width()
-            n = dev_stats.iloc[i]["count"]
-            ax.text(w + 1000, bar.get_y() + bar.get_height() / 2,
-                    f"${w:,.0f} (n={int(n)})", va="center", fontsize=9,
-                    color="#475569", fontweight="500")
-
-        plt.tight_layout()
-        st.pyplot(fig, use_container_width=True)
-        plt.close(fig)
-    else:
-        st.info("DevType column not found in dataset.")
-
-    st.html('</div>')
-
-    # ══ g. ROW 6 — Programming Languages (full width) ════
-    # NEW: LanguageHaveWorkedWith is semicolon-separated (one respondent can
-    # list many languages).  We explode the column so each language gets
-    # its own row, then compute the mean salary per language.
-    st.html('<div class="ep-card">')
-    st.html('<div class="ep-card-title">Salary by Programming Language</div>')
-    st.html('<div class="ep-card-sub">Average salary of developers who use each language (top 15)</div>')
-
-    if "LanguageHaveWorkedWith" in df.columns:
-        # Explode semicolon-separated language lists into individual rows
-        lang_df = df[["LanguageHaveWorkedWith", "Salary"]].dropna(subset=["LanguageHaveWorkedWith"])
-        lang_df = lang_df.copy()
-        lang_df["LanguageHaveWorkedWith"] = lang_df["LanguageHaveWorkedWith"].str.split(";")
-        lang_df = lang_df.explode("LanguageHaveWorkedWith")
-        lang_df["LanguageHaveWorkedWith"] = lang_df["LanguageHaveWorkedWith"].str.strip()
-        lang_df = lang_df[lang_df["LanguageHaveWorkedWith"] != ""]
-
-        # Keep only languages used by at least 50 respondents (removes noise)
-        lang_counts = lang_df["LanguageHaveWorkedWith"].value_counts()
-        common_langs = lang_counts[lang_counts >= 50].index
-        lang_df = lang_df[lang_df["LanguageHaveWorkedWith"].isin(common_langs)]
-
-        # Mean salary per language, top 18 for readability
-        lang_data = (
-            lang_df.groupby("LanguageHaveWorkedWith")["Salary"]
-            .agg(["mean", "count"])
-            .sort_values("mean", ascending=True)
-            .tail(18)
-        )
-        global_avg_lang = df["Salary"].mean()
-
-        fig, ax = plt.subplots(figsize=(14, 8))
-        fig.patch.set_facecolor("#f8faff")
-
-        # Ensure visibility by starting the gradient range at 0.4
-        v_min, v_max = lang_data["mean"].min(), lang_data["mean"].max()
-        if v_max > v_min:
-            vals = 0.4 + 0.5 * (lang_data["mean"].values - v_min) / (v_max - v_min)
-        else:
-            vals = [0.7] * len(lang_data)
-        colors = plt.cm.Blues(vals)
-        colors = [plt.cm.colors.to_hex(c) for c in colors]
-
-        bars = ax.barh(lang_data.index, lang_data["mean"],
-                       color=colors, edgecolor="white", linewidth=1.5, height=0.7)
-
-        _style_ax(ax, "Mean Salary by Programming Language", xlabel="Avg Salary (USD)")
-
-        # Global average benchmark line
-        ax.axvline(global_avg_lang, color="#f43f5e", linestyle="--", alpha=0.5, linewidth=1.5)
-        ax.text(global_avg_lang + 2000, -0.5, f"Global Avg: ${global_avg_lang:,.0f}",
-                color="#f43f5e", fontweight="bold", fontsize=9, va="bottom")
-
-        ax.grid(axis="x", color="#e2e8f0", linewidth=0.8, linestyle="--", alpha=0.7)
-        ax.grid(axis="y", visible=False)
-        ax.xaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f"${x:,.0f}"))
-
-        # Labels including sample size (n=...)
-        for i, bar in enumerate(bars):
-            w = bar.get_width()
-            n = lang_data.iloc[i]["count"]
-            ax.text(w + 1000, bar.get_y() + bar.get_height() / 2,
-                    f"${w:,.0f} (n={int(n)})", va="center", fontsize=9,
-                    color="#475569", fontweight="500")
-
-        plt.tight_layout()
-        st.pyplot(fig, use_container_width=True)
-        plt.close(fig)
-    else:
-        st.info("LanguageHaveWorkedWith column not found in dataset.")
-
-    st.html('</div>')
+    st.html("""
+        <div class="ep-card">
+            <div class="ep-card-title">Market Notes</div>
+            <div class="ep-card-sub">Quick takeaways you can use when comparing skills and salary upside.</div>
+            <div class="ep-notes">
+                <div class="ep-note">
+                    <div class="ep-note-title">Highest-Paying Combination</div>
+                    <div class="ep-note-copy">
+                        Python + React + FastAPI is currently the strongest stack on the page. A mid-level developer with all three can usually command well above the individual skill bands because the skills compound rather than add linearly.
+                    </div>
+                </div>
+                <div class="ep-note">
+                    <div class="ep-note-title">Go Is The Hidden Gem</div>
+                    <div class="ep-note-copy">
+                        Cloud platforms remain in strong demand, and Go fits that cloud-native tooling space extremely well. It shows up as a high-paying option even with only medium demand because fewer developers know it deeply.
+                    </div>
+                </div>
+                <div class="ep-note">
+                    <div class="ep-note-title">HTML/CSS Needs A Pairing Skill</div>
+                    <div class="ep-note-copy">
+                        HTML/CSS alone behaves more like a baseline capability than a premium differentiator. Pairing it with React or Vue is a much stronger path into the higher-paying brackets.
+                    </div>
+                </div>
+            </div>
+        </div>
+    """)

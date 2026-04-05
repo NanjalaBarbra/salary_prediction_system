@@ -1,0 +1,235 @@
+Total rows: 49191
+
+=== ConvertedCompYearly ===
+Non-null: 23947
+count    2.394700e+04
+mean     1.017615e+05
+std      4.617569e+05
+min      1.000000e+00
+25%      3.817100e+04
+50%      7.532000e+04
+75%      1.205960e+05
+max      5.000000e+07
+Name: ConvertedCompYearly, dtype: float64
+
+Rows with salary: 23947
+
+=== WorkExp ===
+Nulls: 478 / 23947 (2.0%)
+count    23469.000000
+mean        13.698027
+std         10.130697
+min          1.000000
+25%          6.000000
+50%         11.000000
+75%         20.000000
+max        100.000000
+Name: WorkExp, dtype: float64
+
+=== EdLevel ===
+Nulls: 17 / 23947 (0.1%)
+EdLevel
+Bachelor’s degree (B.A., B.S., B.Eng., etc.)                                          10425
+Master’s degree (M.A., M.S., M.Eng., MBA, etc.)                                        6918
+Some college/university study without earning a degree                                 2862
+Professional degree (JD, MD, Ph.D, Ed.D, etc.)                                         1363
+Secondary school (e.g. American high school, German Realschule or Gymnasium, etc.)     1215
+Associate degree (A.A., A.S., etc.)                                                     798
+Other (please specify):                                                                 222
+Primary/elementary school                                                               127
+Name: count, dtype: int64
+
+=== Employment ===
+Nulls: 0 / 23947 (0.0%)
+Employment
+Employed                                                19500
+Independent contractor, freelancer, or self-employed     3050
+Student                                                   703
+Not employed                                              504
+Retired                                                   133
+I prefer not to say                                        57
+Name: count, dtype: int64
+
+=== Country ===
+Nulls: 0 / 23947 (0.0%)
+Country
+United States of America                                5243
+Germany                                                 2141
+United Kingdom of Great Britain and Northern Ireland    1486
+India                                                   1096
+France                                                  1027
+Canada                                                   915
+Ukraine                                                  709
+Brazil                                                   639
+Netherlands                                              619
+Poland                                                   589
+Italy                                                    581
+Australia                                                569
+Spain                                                    560
+Sweden                                                   471
+Switzerland                                              418
+Name: count, dtype: int64
+
+=== DevType ===
+Nulls: 0 / 23947 (0.0%)
+DevType
+Developer, full-stack                            7431
+Developer, back-end                              3947
+Architect, software or solutions                 1626
+Developer, front-end                             1136
+Developer, desktop or enterprise applications    1125
+Other (please specify):                           812
+Developer, mobile                                 776
+Developer, embedded applications or devices       773
+Engineering manager                               717
+DevOps engineer or professional                   697
+Academic researcher                               580
+Data engineer                                     488
+Student                                           410
+AI/ML engineer                                    352
+Data scientist                                    345
+Name: count, dtype: int64
+
+=== Industry ===
+Nulls: 914 / 23947 (3.8%)
+Industry
+Software Development                          10714
+Other:                                         1868
+Fintech                                        1233
+Internet, Telecomm or Information Services     1191
+Healthcare                                     1017
+Banking/Financial Services                     1013
+Manufacturing                                   917
+Government                                      868
+Higher Education                                789
+Retail and Consumer Services                    771
+Transportation, or Supply Chain                 654
+Media & Advertising Services                    570
+Computer Systems Design and Services            558
+Energy                                          535
+Insurance                                       335
+Name: count, dtype: int64
+
+=== OrgSize ===
+Nulls: 2743 / 23947 (11.5%)
+OrgSize
+20 to 99 employees                                    4289
+100 to 499 employees                                  4022
+Less than 20 employees                                3312
+10,000 or more employees                              3190
+1,000 to 4,999 employees                              2745
+500 to 999 employees                                  1574
+5,000 to 9,999 employees                              1057
+Just me - I am a freelancer, sole proprietor, etc.     704
+I don’t know                                           311
+Name: count, dtype: int64
+
+=== RemoteWork ===
+Nulls: 2851 / 23947 (11.9%)
+RemoteWork
+Remote                                                                          7126
+Hybrid (some remote, leans heavy to in-person)                                  4203
+Hybrid (some in-person, leans heavy to flexibility)                             3815
+In-person                                                                       3199
+Your choice (very flexible, you can come in when you want or just as needed)    2753
+Name: count, dtype: int64
+
+=== YearsCode ===
+Nulls: 109 / 23947 (0.5%)
+count    23838.000000
+mean        17.705722
+std         11.062391
+min          1.000000
+25%          9.000000
+50%         15.000000
+75%         25.000000
+max        100.000000
+Name: YearsCode, dtype: float64
+
+=== LearnCode ===
+Nulls: 6884 / 23947 (28.7%)
+LearnCode
+Other online resources (e.g. standard search, forum, online community);Stack Overflow or Stack Exchange;Technical documentation (is generated for/by the tool or system)                                                                                                                               357
+Other online resources (e.g. standard search, forum, online community);Technical documentation (is generated for/by the tool or system)                                                                                                                                                                255
+Other online resources (e.g. standard search, forum, online community);Stack Overflow or Stack Exchange;Technical documentation (is generated for/by the tool or system);AI CodeGen tools or AI-enabled apps                                                                                           235
+Other online resources (e.g. standard search, forum, online community);Videos (not associated with specific online course or certification);Stack Overflow or Stack Exchange;Technical documentation (is generated for/by the tool or system);AI CodeGen tools or AI-enabled apps;Blogs or podcasts    167
+AI CodeGen tools or AI-enabled apps                                                                                                                                                                                                                                                                    162
+Other online resources (e.g. standard search, forum, online community);Videos (not associated with specific online course or certification);Stack Overflow or Stack Exchange;Technical documentation (is generated for/by the tool or system);Blogs or podcasts                                        159
+Other online resources (e.g. standard search, forum, online community);Technical documentation (is generated for/by the tool or system);AI CodeGen tools or AI-enabled apps                                                                                                                            159
+Other online resources (e.g. standard search, forum, online community);Stack Overflow or Stack Exchange;Technical documentation (is generated for/by the tool or system);Blogs or podcasts                                                                                                             157
+Technical documentation (is generated for/by the tool or system)                                                                                                                                                                                                                                       151
+Other online resources (e.g. standard search, forum, online community);Stack Overflow or Stack Exchange;Technical documentation (is generated for/by the tool or system);Colleague or on-the-job training                                                                                              149
+Online Courses or Certification (includes all media types)                                                                                                                                                                                                                                             148
+Other online resources (e.g. standard search, forum, online community);Videos (not associated with specific online course or certification);Stack Overflow or Stack Exchange;Technical documentation (is generated for/by the tool or system);AI CodeGen tools or AI-enabled apps                      145
+Other online resources (e.g. standard search, forum, online community);Videos (not associated with specific online course or certification);Stack Overflow or Stack Exchange;Technical documentation (is generated for/by the tool or system)                                                          145
+Videos (not associated with specific online course or certification);Technical documentation (is generated for/by the tool or system);AI CodeGen tools or AI-enabled apps                                                                                                                              136
+Technical documentation (is generated for/by the tool or system);AI CodeGen tools or AI-enabled apps                                                                                                                                                                                                   136
+Name: count, dtype: int64
+
+=== Age ===
+Nulls: 0 / 23947 (0.0%)
+Age
+25-34 years old      8598
+35-44 years old      7582
+45-54 years old      3429
+18-24 years old      2601
+55-64 years old      1387
+65 years or older     328
+Prefer not to say      22
+Name: count, dtype: int64
+
+=== LanguageHaveWorkedWith ===
+Nulls: 1826 / 23947 (7.6%)
+LanguageHaveWorkedWith
+HTML/CSS;JavaScript;TypeScript                                              273
+C#;HTML/CSS;JavaScript;SQL;TypeScript                                       163
+Python                                                                      137
+Python;SQL                                                                  137
+C#;HTML/CSS;JavaScript;PowerShell;SQL;TypeScript                            133
+C#;HTML/CSS;JavaScript;SQL                                                  131
+HTML/CSS;JavaScript;PHP;SQL                                                 117
+Bash/Shell (all shells);HTML/CSS;JavaScript;Python;SQL;TypeScript           115
+Bash/Shell (all shells);Python;SQL                                          115
+C#                                                                          102
+HTML/CSS;JavaScript;PHP;SQL;TypeScript                                      101
+Bash/Shell (all shells);C#;HTML/CSS;JavaScript;PowerShell;SQL;TypeScript     92
+HTML/CSS;JavaScript;Python;SQL;TypeScript                                    91
+HTML/CSS;JavaScript;SQL;TypeScript                                           88
+Bash/Shell (all shells);HTML/CSS;JavaScript;TypeScript                       86
+Name: count, dtype: int64
+
+=== WebframeHaveWorkedWith ===
+Nulls: 7344 / 23947 (30.7%)
+WebframeHaveWorkedWith
+React                            345
+Spring Boot                      319
+Node.js;React                    261
+Next.js;Node.js;React            181
+Node.js                          179
+ASP.NET Core                     172
+FastAPI                          171
+jQuery                           160
+Angular                          154
+Express;Node.js;React            146
+ASP.NET;ASP.NET Core             144
+Flask                            141
+Express;Next.js;Node.js;React    134
+Django                           134
+Ruby on Rails                    132
+Name: count, dtype: int64
+
+=== Salary percentiles ===
+  1th: $65
+  5th: $2,725
+  10th: $8,628
+  25th: $38,171
+  50th: $75,320
+  75th: $120,596
+  90th: $184,000
+  95th: $232,029
+  99th: $440,856
+
+=== Duplicates ===
+Total duplicates: 2
+
+DONE

@@ -125,6 +125,18 @@ def init_db() -> None:
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
             """)
 
+            # ── admins table ───────────────────────────────────────────────────
+            # Stores admin accounts separately from regular users.
+            # Passwords are hashed with werkzeug (bcrypt-backed) — never plaintext.
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS admins (
+                    id         INT AUTO_INCREMENT PRIMARY KEY,
+                    username   VARCHAR(80)  UNIQUE NOT NULL,
+                    password   VARCHAR(255) NOT NULL,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+            """)
+
             conn.commit()
 
     print("✅ Database and tables initialised successfully")
@@ -150,6 +162,15 @@ def migrate_db() -> None:
         ("created_at", "ALTER TABLE users       ADD COLUMN created_at   DATETIME DEFAULT CURRENT_TIMESTAMP"),
         ("email",      "ALTER TABLE users       ADD COLUMN email        VARCHAR(255) AFTER username"),
         ("idx_username","ALTER TABLE predictions ADD INDEX idx_username (username)"),
+        # admins table migration — safe to run even if table already exists
+        ("admins_table", """
+            CREATE TABLE IF NOT EXISTS admins (
+                id         INT AUTO_INCREMENT PRIMARY KEY,
+                username   VARCHAR(80)  UNIQUE NOT NULL,
+                password   VARCHAR(255) NOT NULL,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+        """),
     ]
 
     with get_connection() as conn:
