@@ -171,7 +171,9 @@ def load_data():
     - DevType: take primary role, shorten label
     - LanguageHaveWorkedWith: semicolon-separated — exploded later per chart
     """
-    df = pd.read_csv("data/survey_results_public.csv", low_memory=False)
+    file_id = "1PpMB9-gj8eOMqAXKjNuP0YTPPFrJ5_c3"
+    url = f"https://drive.google.com/uc?export=download&id={file_id}"
+    df = pd.read_csv(url, low_memory=False)
 
     # 2025 column names — different from 2020
     wanted = ["Country", "EdLevel", "WorkExp", "Employment",
